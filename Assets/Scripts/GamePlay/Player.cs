@@ -37,7 +37,7 @@ public class Player : MonoBehaviour
         isFinish = false;
         gamePlayInfo = ServiceManager.service.Get<GamePlayInfo>();
         currentPos = 0;
-        nextPos = 23;
+        nextPos = 0;
     }
 
     private void Update()
@@ -61,7 +61,7 @@ public class Player : MonoBehaviour
                 var currentTile = tiles.GetChild(currentPos);
                 var direction = (currentTile.position - transform.position).normalized;
 
-                if (Vector3.Distance(currentTile.position, transform.position) > 0.01f)
+                if (Vector3.Distance(currentTile.position, transform.position) > 0.001f)
                 {
                     transform.position += direction * Time.deltaTime;
                 }
@@ -73,7 +73,6 @@ public class Player : MonoBehaviour
             else
             {
                 isCurrentTurn = false;
-                info.turnCount += 1;
                 OnMovingDone?.Invoke();
             }
         }

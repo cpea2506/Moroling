@@ -45,6 +45,7 @@ public class GamePlayManager : MonoBehaviour
 
     private void NextPlayer()
     {
+        gamePlayInfo.players[currentPlayerIndex].info.turnCount += 1;
         currentPlayerIndex += 1;
         gamePlayInfo.canToss = true;
     }
