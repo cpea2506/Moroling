@@ -42,7 +42,7 @@ public partial class @PlayerInputAction : IInputActionCollection2, IDisposable
                     ""name"": """",
                     ""id"": ""91a4b824-1630-49ee-852d-6453369f1eb7"",
                     ""path"": ""<Keyboard>/space"",
-                    ""interactions"": ""Press(behavior=2)"",
+                    ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""TossingDice"",

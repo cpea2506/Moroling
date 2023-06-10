@@ -7,6 +7,7 @@ public class ServiceManager : MonoBehaviour
     private void Awake()
     {
         service.Register(new PlayerInputAction());
+        service.Register(new GamePlayInfo());
     }
 
     private void OnEnable()
