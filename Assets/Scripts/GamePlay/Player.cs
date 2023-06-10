@@ -10,10 +10,7 @@ public class Player : MonoBehaviour
     private int currentPos;
 
     [SerializeField]
-    private Transform[] tiles;
-
-    [SerializeField]
-    private TextMeshProUGUI nameTextField;
+    private Tiles tiles;
 
     [SerializeField]
     private CinemachineVirtualCamera followCamera;
@@ -27,6 +24,9 @@ public class Player : MonoBehaviour
     [NonSerialized]
     public int nextPos;
 
+    [HideInInspector]
+    public bool isFinish;
+
     public static event Action OnMovingDone;
 
     private void Start()
@@ -34,12 +34,10 @@ public class Player : MonoBehaviour
         info = new PlayerInfo();
         info.rank = Rank.None;
         isCurrentTurn = false;
+        isFinish = false;
         gamePlayInfo = ServiceManager.service.Get<GamePlayInfo>();
         currentPos = 0;
-        nextPos = 0;
-
-        // nameTextField.enabled = true;
-        // playerInfo.name = nameTextField.text;
+        nextPos = 23;
     }
 
     private void Update()
@@ -51,16 +49,16 @@ public class Player : MonoBehaviour
 
     private void Move()
     {
-        if (AtFinalDestination)
+        if (gamePlayInfo.gameState == GameState.Over)
         {
-            isCurrentTurn = false;
-            OnMovingDone?.Invoke();
+            return;
         }
-        else if (isCurrentTurn)
+
+        if (isCurrentTurn)
         {
-            if (currentPos <= nextPos)
+            if (currentPos <= nextPos && !AtFinalDestination)
             {
-                var currentTile = tiles[currentPos];
+                var currentTile = tiles.GetChild(currentPos);
                 var direction = (currentTile.position - transform.position).normalized;
 
                 if (Vector3.Distance(currentTile.position, transform.position) > 0.01f)
@@ -75,6 +73,7 @@ public class Player : MonoBehaviour
             else
             {
                 isCurrentTurn = false;
+                info.turnCount += 1;
                 OnMovingDone?.Invoke();
             }
         }
@@ -82,13 +81,13 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (AtFinalDestination)
+        if (other.gameObject.name.Contains("end"))
         {
+            currentPos = tiles.Length;
             gamePlayInfo.playerRank += 1;
             info.rank = (Rank)gamePlayInfo.playerRank;
         }
     }
 
-    private bool AtFinalDestination => currentPos == tiles.Length;
-    private bool IsOnTrap => false;
+    public bool AtFinalDestination => currentPos == tiles.Length;
 }

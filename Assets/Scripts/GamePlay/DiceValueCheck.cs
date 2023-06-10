@@ -35,9 +35,9 @@ public class DiceValueCheck : MonoBehaviour
 
     private IEnumerator StopTossing()
     {
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1.5f);
 
-        gamePlayInfo.canToss = false;
         OnTossingDone?.Invoke();
+        gamePlayInfo.canToss = false;
     }
 }

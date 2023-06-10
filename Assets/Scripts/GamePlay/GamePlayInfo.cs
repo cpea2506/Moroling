@@ -29,5 +29,6 @@ public class GamePlayInfo
     public int playerRank = (int)Rank.None;
     public int diceValue = 0;
     public bool canToss = true;
-    public GameState gameState = GameState.Playing;
+    public GameState gameState = GameState.Idle;
+    public Player[] players;
 }

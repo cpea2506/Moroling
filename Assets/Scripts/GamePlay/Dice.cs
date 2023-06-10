@@ -29,6 +29,11 @@ public class Dice : MonoBehaviour
 
     private void Update()
     {
+        if (gamePlayInfo.gameState == GameState.Over)
+        {
+            return;
+        }
+
         if (gamePlayInfo.canToss && playerInputAction.Player.TossingDice.IsPressed() && IsGrounded)
         {
             diceRigidbody.useGravity = true;

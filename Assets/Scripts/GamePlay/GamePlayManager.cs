@@ -17,6 +17,8 @@ public class GamePlayManager : MonoBehaviour
         gamePlayInfo = ServiceManager.service.Get<GamePlayInfo>();
 
         SetPlayerPriority();
+
+        gamePlayInfo.players = players;
     }
 
     private void SetPlayerPriority()
@@ -35,10 +37,10 @@ public class GamePlayManager : MonoBehaviour
 
         for (int i = 0; i < players.Length; i++)
         {
-            players[i].isCurrentTurn = i == currentPlayerIndex;
+            gamePlayInfo.players[i].isCurrentTurn = i == currentPlayerIndex;
         }
 
-        players[currentPlayerIndex].nextPos += gamePlayInfo.diceValue;
+        gamePlayInfo.players[currentPlayerIndex].nextPos += gamePlayInfo.diceValue;
     }
 
     private void NextPlayer()
@@ -59,8 +61,31 @@ public class GamePlayManager : MonoBehaviour
         Player.OnMovingDone -= NextPlayer;
     }
 
+    private void GameOverCheck()
+    {
+        // assume that all pawns have finish their path
+        bool allFinish = true;
+
+        foreach (var player in players)
+        {
+            if (!player.AtFinalDestination)
+            {
+                allFinish = false;
+
+                break;
+            }
+        }
+
+        if (allFinish)
+        {
+            gamePlayInfo.gameState = GameState.Over;
+        }
+    }
+
     private void Update()
     {
         dice.gameObject.SetActive(gamePlayInfo.canToss);
+
+        GameOverCheck();
     }
 }
