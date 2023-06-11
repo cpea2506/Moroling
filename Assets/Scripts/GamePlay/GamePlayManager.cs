@@ -1,14 +1,11 @@
-using System;
 using TMPro;
+using System;
 using UnityEngine;
 
 public class GamePlayManager : MonoBehaviour
 {
     private int currentPlayerIndex;
     private GamePlayInfo gamePlayInfo;
-
-    [SerializeField]
-    private TextMeshProUGUI turnTextField;
 
     [SerializeField]
     private Dice dice;
@@ -19,7 +16,6 @@ public class GamePlayManager : MonoBehaviour
     private void Start()
     {
         gamePlayInfo = ServiceManager.service.Get<GamePlayInfo>();
-        turnTextField.enabled = true;
 
         SetPlayerPriority();
 
@@ -52,12 +48,7 @@ public class GamePlayManager : MonoBehaviour
     private void NextPlayer()
     {
         currentPlayerIndex += 1;
-        while (gamePlayInfo.players[currentPlayerIndex].AtFinalDestination)
-        {
-            currentPlayerIndex += 1;
-        }
 
-        turnTextField.text = gamePlayInfo.players[currentPlayerIndex].info.name;
         gamePlayInfo.canToss = true;
     }
 
@@ -95,8 +86,10 @@ public class GamePlayManager : MonoBehaviour
 
     private void Update()
     {
-        dice.gameObject.SetActive(gamePlayInfo.canToss);
-
-        CheckGameOver();
+        if (gamePlayInfo.gameState == GameState.Playing)
+        {
+            CheckGameOver();
+            dice.gameObject.SetActive(gamePlayInfo.canToss);
+        }
     }
 }

@@ -43,7 +43,7 @@ public class Player : MonoBehaviour
         isCurrentTurn = false;
         isFinish = false;
         currentPos = 0;
-        nextPos = 23;
+        nextPos = 0;
 
         gamePlayInfo = ServiceManager.service.Get<GamePlayInfo>();
     }

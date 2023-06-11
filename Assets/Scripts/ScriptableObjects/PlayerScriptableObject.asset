@@ -12,8 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43a38d7423da042559b6bb7d190e9d44, type: 3}
   m_Name: PlayerScriptableObject
   m_EditorClassIdentifier: 
-  playerNames:
-  - Huy
-  - Nam
-  - Lmao
-  - Alo
+  playerNames: []

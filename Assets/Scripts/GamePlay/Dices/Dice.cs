@@ -31,7 +31,7 @@ public class Dice : MonoBehaviour
 
     private void Update()
     {
-        if (gamePlayInfo.gameState == GameState.Over)
+        if (gamePlayInfo.gameState != GameState.Playing)
         {
             return;
         }
@@ -46,7 +46,7 @@ public class Dice : MonoBehaviour
 
             transform.position = new Vector3(0, 2f, 0);
             transform.rotation = Quaternion.identity;
-            diceRigidbody.AddForce(transform.up * 50f);
+            diceRigidbody.AddForce(transform.up * 65f);
             diceRigidbody.AddTorque(x, y, z);
         }
     }
