@@ -1,9 +1,13 @@
 using TMPro;
 using UnityEngine;
+using System.Collections.Generic;
 using UnityEngine.SceneManagement;
 
 public class ScoreboardMenu : MonoBehaviour
 {
+    [SerializeField]
+    private PlayerScriptableObject playerManagerValue;
+
     [SerializeField]
     private GameObject scoreBoardCanvas;
 
@@ -36,6 +40,9 @@ public class ScoreboardMenu : MonoBehaviour
         {
             if (player.info.rank != Rank.None && player.info.rank == (Rank)gamePlayInfo.playerRank)
             {
+                Debug.Log(
+                    $"{player.info.name}: {player.info.turnCount}, {gamePlayInfo.playerRank}"
+                );
                 playerNames[gamePlayInfo.playerRank - 1].text = player.info.name;
                 playerTurns[gamePlayInfo.playerRank - 1].text = player.info.turnCount.ToString();
             }
@@ -44,6 +51,7 @@ public class ScoreboardMenu : MonoBehaviour
 
     public void ToMainMenu()
     {
+        playerManagerValue.playerNames = new List<string>();
         SceneManager.LoadScene("MainMenu");
     }
 

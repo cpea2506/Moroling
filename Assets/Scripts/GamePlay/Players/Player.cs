@@ -10,10 +10,13 @@ public class Player : MonoBehaviour
     private int currentPos;
 
     [SerializeField]
-    private Tiles tiles;
+    private CinemachineVirtualCamera followCamera;
 
     [SerializeField]
-    private CinemachineVirtualCamera followCamera;
+    private GameObject pawnVisual;
+
+    [SerializeField]
+    private Tiles tiles;
 
     [NonSerialized]
     public bool isCurrentTurn;
@@ -24,6 +27,9 @@ public class Player : MonoBehaviour
     [NonSerialized]
     public int nextPos;
 
+    [NonSerialized]
+    public Vector3 direction;
+
     [HideInInspector]
     public bool isFinish;
 
@@ -33,11 +39,13 @@ public class Player : MonoBehaviour
     {
         info = new PlayerInfo();
         info.rank = Rank.None;
+
         isCurrentTurn = false;
         isFinish = false;
-        gamePlayInfo = ServiceManager.service.Get<GamePlayInfo>();
         currentPos = 0;
-        nextPos = 0;
+        nextPos = 23;
+
+        gamePlayInfo = ServiceManager.service.Get<GamePlayInfo>();
     }
 
     private void Update()
@@ -51,6 +59,8 @@ public class Player : MonoBehaviour
     {
         if (gamePlayInfo.gameState == GameState.Over)
         {
+            isCurrentTurn = false;
+
             return;
         }
 
@@ -59,11 +69,13 @@ public class Player : MonoBehaviour
             if (currentPos <= nextPos && !AtFinalDestination)
             {
                 var currentTile = tiles.GetChild(currentPos);
-                var direction = (currentTile.position - transform.position).normalized;
 
-                if (Vector3.Distance(currentTile.position, transform.position) > 0.001f)
+                direction = (currentTile.position - transform.position).normalized;
+
+                if (Vector3.Distance(currentTile.position, transform.position) > 0.01f)
                 {
                     transform.position += direction * Time.deltaTime;
+                    pawnVisual.transform.LookAt(currentTile.position);
                 }
                 else
                 {
@@ -80,7 +92,7 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.name.Contains("end"))
+        if (other.gameObject.name.Contains("End"))
         {
             currentPos = tiles.Length;
             gamePlayInfo.playerRank += 1;

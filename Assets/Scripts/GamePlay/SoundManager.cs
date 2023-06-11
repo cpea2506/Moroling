@@ -2,9 +2,9 @@ using UnityEngine;
 
 public enum SFX
 {
-    Theme,
-    Ocean,
-    GameOver,
+    DiceTossing,
+    Moving,
+    AtTheEnd,
 }
 
 public class SoundManager : MonoBehaviour

@@ -1,7 +1,5 @@
-using System;
 using Cinemachine;
 using UnityEngine;
-using System.Collections;
 
 public class Dice : MonoBehaviour
 {
@@ -15,6 +13,10 @@ public class Dice : MonoBehaviour
     private void Awake()
     {
         diceRigidbody = GetComponent<Rigidbody>();
+    }
+
+    private void Start()
+    {
         playerInputAction = ServiceManager.service.Get<PlayerInputAction>();
         gamePlayInfo = ServiceManager.service.Get<GamePlayInfo>();
     }

@@ -1,10 +1,14 @@
 using System;
+using TMPro;
 using UnityEngine;
 
 public class GamePlayManager : MonoBehaviour
 {
     private int currentPlayerIndex;
     private GamePlayInfo gamePlayInfo;
+
+    [SerializeField]
+    private TextMeshProUGUI turnTextField;
 
     [SerializeField]
     private Dice dice;
@@ -15,6 +19,7 @@ public class GamePlayManager : MonoBehaviour
     private void Start()
     {
         gamePlayInfo = ServiceManager.service.Get<GamePlayInfo>();
+        turnTextField.enabled = true;
 
         SetPlayerPriority();
 
@@ -41,12 +46,18 @@ public class GamePlayManager : MonoBehaviour
         }
 
         gamePlayInfo.players[currentPlayerIndex].nextPos += gamePlayInfo.diceValue;
+        gamePlayInfo.players[currentPlayerIndex].info.turnCount += 1;
     }
 
     private void NextPlayer()
     {
-        gamePlayInfo.players[currentPlayerIndex].info.turnCount += 1;
         currentPlayerIndex += 1;
+        while (gamePlayInfo.players[currentPlayerIndex].AtFinalDestination)
+        {
+            currentPlayerIndex += 1;
+        }
+
+        turnTextField.text = gamePlayInfo.players[currentPlayerIndex].info.name;
         gamePlayInfo.canToss = true;
     }
 
@@ -62,7 +73,7 @@ public class GamePlayManager : MonoBehaviour
         Player.OnMovingDone -= NextPlayer;
     }
 
-    private void GameOverCheck()
+    private void CheckGameOver()
     {
         // assume that all pawns have finish their path
         bool allFinish = true;
@@ -72,7 +83,6 @@ public class GamePlayManager : MonoBehaviour
             if (!player.AtFinalDestination)
             {
                 allFinish = false;
-
                 break;
             }
         }
@@ -87,6 +97,6 @@ public class GamePlayManager : MonoBehaviour
     {
         dice.gameObject.SetActive(gamePlayInfo.canToss);
 
-        GameOverCheck();
+        CheckGameOver();
     }
 }
