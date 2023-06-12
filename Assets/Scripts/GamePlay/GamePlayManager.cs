@@ -8,6 +8,9 @@ public class GamePlayManager : MonoBehaviour
     private int currentPlayerIndex;
 
     [SerializeField]
+    private GameObject playerTurnTextField;
+
+    [SerializeField]
     private Dice dice;
 
     public Player[] players;
@@ -93,6 +96,8 @@ public class GamePlayManager : MonoBehaviour
         if (gamePlayInfo.gameState == GameState.Playing)
         {
             CheckGameOver();
+            playerTurnTextField.GetComponentInChildren<TextMeshProUGUI>().text =
+                $"{CurrentPlayer.info.name}'s turn";
         }
     }
 
@@ -100,11 +105,13 @@ public class GamePlayManager : MonoBehaviour
     {
         NextPlayer();
         dice.gameObject.SetActive(true);
+        playerTurnTextField.gameObject.SetActive(true);
     }
 
     private void OnTossingDone()
     {
         PlayerTurn();
         dice.gameObject.SetActive(false);
+        playerTurnTextField.gameObject.SetActive(false);
     }
 }

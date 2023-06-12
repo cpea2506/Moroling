@@ -14,7 +14,7 @@ public class InGameMenu : MonoBehaviour
     private TMP_InputField[] inputFields;
 
     [SerializeField]
-    private GameObject buttonCanvas;
+    private GameObject inGameCanvas;
 
     [SerializeField]
     private GameObject nameInputCanvas;
@@ -38,7 +38,7 @@ public class InGameMenu : MonoBehaviour
 
     private void Update()
     {
-        buttonCanvas.SetActive(gamePlayInfo.gameState == GameState.Playing);
+        inGameCanvas.SetActive(gamePlayInfo.gameState == GameState.Playing);
     }
 
     public void StartGame()
