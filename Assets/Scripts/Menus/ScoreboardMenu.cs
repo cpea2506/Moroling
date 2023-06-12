@@ -18,6 +18,7 @@ public class ScoreboardMenu : MonoBehaviour
     private GamePlayManager gamePlayManager;
 
     private GamePlayInfo gamePlayInfo;
+    private bool soundPlayed;
 
     private void Start()
     {
@@ -31,7 +32,12 @@ public class ScoreboardMenu : MonoBehaviour
         if (gamePlayInfo.gameState == GameState.Over)
         {
             scoreBoardCanvas.SetActive(true);
-            SoundManager.instance.PlaySound(SFX.AtTheEnd, 0.1f);
+
+            if (!soundPlayed)
+            {
+                SoundManager.instance.PlaySound(SFX.AtTheEnd, 0.1f);
+                soundPlayed = true;
+            }
         }
     }
 
