@@ -39,7 +39,6 @@ public class ScoreboardMenu : MonoBehaviour
     {
         foreach (var player in gamePlayManager.players)
         {
-            Debug.Log(gamePlayManager.players);
             if (player.info.rank != Rank.None && player.info.rank == (Rank)gamePlayInfo.playerRank)
             {
                 playerNames[gamePlayInfo.playerRank - 1].text = player.info.name;
