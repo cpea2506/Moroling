@@ -29,6 +29,8 @@ public class DiceValueCheck : MonoBehaviour
                 _ => 0 // cannot be reached
             };
 
+            gamePlayInfo.canToss = false;
+
             StartCoroutine(StopTossing());
         }
     }
@@ -38,6 +40,5 @@ public class DiceValueCheck : MonoBehaviour
         yield return new WaitForSeconds(1.5f);
 
         OnTossingDone?.Invoke();
-        gamePlayInfo.canToss = false;
     }
 }

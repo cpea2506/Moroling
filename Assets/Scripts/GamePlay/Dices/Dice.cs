@@ -24,6 +24,7 @@ public class Dice : MonoBehaviour
     private void OnEnable()
     {
         diceRigidbody.useGravity = false;
+        diceRigidbody.isKinematic = true;
         transform.position = Vector3.zero;
         transform.eulerAngles = new Vector3(-48, 228, 131);
         followCamera.transform.position = new Vector3(-0.3f, 3f, -0.5f);
@@ -39,6 +40,7 @@ public class Dice : MonoBehaviour
                 && IsGrounded
             )
             {
+                diceRigidbody.isKinematic = false;
                 diceRigidbody.useGravity = true;
 
                 float x = UnityEngine.Random.Range(0f, 500f);

@@ -38,7 +38,7 @@ public class Player : MonoBehaviour
         info.rank = Rank.None;
 
         currentPos = 0;
-        targetPos = 22;
+        targetPos = 0;
         isCurrentTurn = false;
 
         gamePlayInfo = ServiceManager.service.Get<GamePlayInfo>();

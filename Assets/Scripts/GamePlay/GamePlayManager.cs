@@ -58,14 +58,14 @@ public class GamePlayManager : MonoBehaviour
 
     private void OnEnable()
     {
-        Player.OnMovingDone += NextPlayer;
-        DiceValueCheck.OnTossingDone += PlayerTurn;
+        Player.OnMovingDone += OnMovingDone;
+        DiceValueCheck.OnTossingDone += OnTossingDone;
     }
 
     private void OnDisable()
     {
-        Player.OnMovingDone -= NextPlayer;
-        DiceValueCheck.OnTossingDone -= PlayerTurn;
+        Player.OnMovingDone += OnMovingDone;
+        DiceValueCheck.OnTossingDone += OnTossingDone;
     }
 
     private void CheckGameOver()
@@ -93,7 +93,18 @@ public class GamePlayManager : MonoBehaviour
         if (gamePlayInfo.gameState == GameState.Playing)
         {
             CheckGameOver();
-            dice.gameObject.SetActive(gamePlayInfo.canToss);
         }
+    }
+
+    private void OnMovingDone()
+    {
+        NextPlayer();
+        dice.gameObject.SetActive(true);
+    }
+
+    private void OnTossingDone()
+    {
+        PlayerTurn();
+        dice.gameObject.SetActive(false);
     }
 }
