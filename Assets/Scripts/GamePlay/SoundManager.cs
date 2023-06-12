@@ -4,6 +4,7 @@ public enum SFX
 {
     BouncingDice,
     AtTheEnd,
+    Moving
 }
 
 public class SoundManager : MonoBehaviour

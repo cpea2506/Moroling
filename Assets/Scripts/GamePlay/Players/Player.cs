@@ -78,6 +78,7 @@ public class Player : MonoBehaviour
         }
         else
         {
+            SoundManager.instance.PlaySound(SFX.Moving);
             currentPos += 1;
         }
     }

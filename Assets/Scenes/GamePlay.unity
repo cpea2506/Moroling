@@ -10425,6 +10425,7 @@ MonoBehaviour:
   sfxSounds:
   - {fileID: 8300000, guid: c7b2ff21337a941f89efc533546cf2bf, type: 3}
   - {fileID: 8300000, guid: 7a2d197d067394c94ac49235748ef116, type: 3}
+  - {fileID: 8300000, guid: 6b47ab0baf4c6454bbd317528303f41f, type: 3}
 --- !u!1 &1412526518
 GameObject:
   m_ObjectHideFlags: 0
