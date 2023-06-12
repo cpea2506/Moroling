@@ -2,8 +2,7 @@ using UnityEngine;
 
 public enum SFX
 {
-    DiceTossing,
-    Moving,
+    BouncingDice,
     AtTheEnd,
 }
 

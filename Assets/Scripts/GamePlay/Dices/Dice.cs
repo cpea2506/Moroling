@@ -29,25 +29,35 @@ public class Dice : MonoBehaviour
         followCamera.transform.position = new Vector3(-0.3f, 3f, -0.5f);
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        if (gamePlayInfo.gameState != GameState.Playing)
+        if (gamePlayInfo.gameState == GameState.Playing)
         {
-            return;
+            if (
+                gamePlayInfo.canToss
+                && playerInputAction.Player.TossingDice.IsPressed()
+                && IsGrounded
+            )
+            {
+                diceRigidbody.useGravity = true;
+
+                float x = UnityEngine.Random.Range(0f, 500f);
+                float y = UnityEngine.Random.Range(0f, 500f);
+                float z = UnityEngine.Random.Range(0f, 500f);
+
+                transform.position = new Vector3(0, 2f, 0);
+                transform.rotation = Quaternion.identity;
+                diceRigidbody.AddForce(transform.up * 50f);
+                diceRigidbody.AddTorque(x, y, z);
+            }
         }
+    }
 
-        if (gamePlayInfo.canToss && playerInputAction.Player.TossingDice.IsPressed() && IsGrounded)
+    private void OnCollisionEnter(Collision other)
+    {
+        if (other.gameObject.CompareTag("Ground"))
         {
-            diceRigidbody.useGravity = true;
-
-            float x = UnityEngine.Random.Range(0f, 500f);
-            float y = UnityEngine.Random.Range(0f, 500f);
-            float z = UnityEngine.Random.Range(0f, 500f);
-
-            transform.position = new Vector3(0, 2f, 0);
-            transform.rotation = Quaternion.identity;
-            diceRigidbody.AddForce(transform.up * 65f);
-            diceRigidbody.AddTorque(x, y, z);
+            SoundManager.instance.PlaySound(SFX.BouncingDice);
         }
     }
 

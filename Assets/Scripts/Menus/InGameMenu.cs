@@ -8,10 +8,13 @@ public class InGameMenu : MonoBehaviour
     private PlayerScriptableObject playerManagerValue;
 
     [SerializeField]
-    private Player[] players;
+    private GamePlayManager gamePlayManager;
 
     [SerializeField]
     private TMP_InputField[] inputFields;
+
+    [SerializeField]
+    private GameObject buttonCanvas;
 
     [SerializeField]
     private GameObject nameInputCanvas;
@@ -26,24 +29,33 @@ public class InGameMenu : MonoBehaviour
         {
             for (int i = 0; i < playerManagerValue.playerNames.Count; i++)
             {
-                players[i].info.name = playerManagerValue.playerNames[i];
+                gamePlayManager.players[i].info.name = playerManagerValue.playerNames[i];
             }
 
-            nameInputCanvas.SetActive(false);
+            ToInGame();
         }
+    }
+
+    private void Update()
+    {
+        buttonCanvas.SetActive(gamePlayInfo.gameState == GameState.Playing);
     }
 
     public void StartGame()
     {
-        int i = 0;
-        foreach (var inputField in inputFields)
+        for (int i = 0; i < inputFields.Length; i++)
         {
-            players[i].info.name = inputField.text;
-            playerManagerValue.playerNames.Add(inputField.text);
+            string playerName = inputFields[i].text;
 
-            i += 1;
+            gamePlayManager.players[i].info.name = playerName;
+            playerManagerValue.playerNames.Add(playerName);
         }
 
+        ToInGame();
+    }
+
+    private void ToInGame()
+    {
         nameInputCanvas.SetActive(false);
         gamePlayInfo.gameState = GameState.Playing;
     }

@@ -30,5 +30,4 @@ public class GamePlayInfo
     public int diceValue = 0;
     public bool canToss = true;
     public GameState gameState = GameState.Idle;
-    public Player[] players;
 }

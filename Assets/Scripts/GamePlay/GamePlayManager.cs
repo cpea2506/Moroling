@@ -4,22 +4,19 @@ using UnityEngine;
 
 public class GamePlayManager : MonoBehaviour
 {
-    private int currentPlayerIndex;
     private GamePlayInfo gamePlayInfo;
+    private int currentPlayerIndex;
 
     [SerializeField]
     private Dice dice;
 
-    [SerializeField]
-    private Player[] players;
+    public Player[] players;
 
     private void Start()
     {
         gamePlayInfo = ServiceManager.service.Get<GamePlayInfo>();
 
         SetPlayerPriority();
-
-        gamePlayInfo.players = players;
     }
 
     private void SetPlayerPriority()
@@ -38,30 +35,37 @@ public class GamePlayManager : MonoBehaviour
 
         for (int i = 0; i < players.Length; i++)
         {
-            gamePlayInfo.players[i].isCurrentTurn = i == currentPlayerIndex;
+            players[i].isCurrentTurn = i == currentPlayerIndex;
         }
 
-        gamePlayInfo.players[currentPlayerIndex].nextPos += gamePlayInfo.diceValue;
-        gamePlayInfo.players[currentPlayerIndex].info.turnCount += 1;
+        CurrentPlayer.targetPos += gamePlayInfo.diceValue;
+        CurrentPlayer.info.turnCount += 1;
     }
+
+    private Player CurrentPlayer => players[currentPlayerIndex % players.Length];
 
     private void NextPlayer()
     {
         currentPlayerIndex += 1;
+
+        while (CurrentPlayer.AtFinalDestination)
+        {
+            currentPlayerIndex += 1;
+        }
 
         gamePlayInfo.canToss = true;
     }
 
     private void OnEnable()
     {
-        DiceValueCheck.OnTossingDone += PlayerTurn;
         Player.OnMovingDone += NextPlayer;
+        DiceValueCheck.OnTossingDone += PlayerTurn;
     }
 
     private void OnDisable()
     {
-        DiceValueCheck.OnTossingDone -= PlayerTurn;
         Player.OnMovingDone -= NextPlayer;
+        DiceValueCheck.OnTossingDone -= PlayerTurn;
     }
 
     private void CheckGameOver()

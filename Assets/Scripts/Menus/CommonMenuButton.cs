@@ -1,16 +1,20 @@
 using UnityEngine;
-using System.Collections.Generic;
 using UnityEngine.SceneManagement;
+using System.Collections.Generic;
 
-public class MainMenu : MonoBehaviour
+public class CommonMenuButton : MonoBehaviour
 {
     [SerializeField]
     private PlayerScriptableObject playerManagerValue;
 
-    public void LoadInGame()
+    public void ToMainMenu()
     {
         playerManagerValue.playerNames = new List<string>();
+        SceneManager.LoadScene("MainMenu");
+    }
 
+    public void RestartGame()
+    {
         SceneManager.LoadScene("GamePlay");
     }
 }

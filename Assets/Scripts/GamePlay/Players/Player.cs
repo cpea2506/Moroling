@@ -25,13 +25,10 @@ public class Player : MonoBehaviour
     public PlayerInfo info;
 
     [NonSerialized]
-    public int nextPos;
+    public int targetPos;
 
     [NonSerialized]
     public Vector3 direction;
-
-    [HideInInspector]
-    public bool isFinish;
 
     public static event Action OnMovingDone;
 
@@ -40,53 +37,48 @@ public class Player : MonoBehaviour
         info = new PlayerInfo();
         info.rank = Rank.None;
 
-        isCurrentTurn = false;
-        isFinish = false;
         currentPos = 0;
-        nextPos = 0;
+        targetPos = 0;
+        isCurrentTurn = false;
 
         gamePlayInfo = ServiceManager.service.Get<GamePlayInfo>();
     }
 
-    private void Update()
+    private void FixedUpdate()
     {
-        followCamera.Priority = isCurrentTurn ? 10 : 0;
-
-        Move();
-    }
-
-    private void Move()
-    {
-        if (gamePlayInfo.gameState == GameState.Over)
+        if (gamePlayInfo.gameState == GameState.Playing)
         {
-            isCurrentTurn = false;
+            followCamera.Priority = isCurrentTurn ? 10 : 0;
 
-            return;
-        }
-
-        if (isCurrentTurn)
-        {
-            if (currentPos <= nextPos && !AtFinalDestination)
+            if (isCurrentTurn)
             {
-                var currentTile = tiles.GetChild(currentPos);
-
-                direction = (currentTile.position - transform.position).normalized;
-
-                if (Vector3.Distance(currentTile.position, transform.position) > 0.01f)
+                if (currentPos <= targetPos && !AtFinalDestination)
                 {
-                    transform.position += direction * Time.deltaTime;
-                    pawnVisual.transform.LookAt(currentTile.position);
+                    MoveAndRotate();
                 }
                 else
                 {
-                    currentPos++;
+                    isCurrentTurn = false;
+                    OnMovingDone?.Invoke();
                 }
             }
-            else
-            {
-                isCurrentTurn = false;
-                OnMovingDone?.Invoke();
-            }
+        }
+    }
+
+    private void MoveAndRotate()
+    {
+        var nextTile = tiles.GetChild(currentPos);
+
+        direction = (nextTile.position - transform.position).normalized;
+
+        if (Vector3.Distance(nextTile.position, transform.position) >= 0.01f)
+        {
+            transform.position += direction * Time.deltaTime;
+            pawnVisual.transform.LookAt(nextTile.position);
+        }
+        else
+        {
+            currentPos += 1;
         }
     }
 
