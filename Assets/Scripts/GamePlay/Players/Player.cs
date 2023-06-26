@@ -1,8 +1,6 @@
 using System;
-using TMPro;
 using Cinemachine;
 using UnityEngine;
-using UnityEngine.Splines;
 
 public class Player : MonoBehaviour
 {
@@ -83,6 +81,7 @@ public class Player : MonoBehaviour
         }
     }
 
+    // lmao
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.name.Contains("End"))
